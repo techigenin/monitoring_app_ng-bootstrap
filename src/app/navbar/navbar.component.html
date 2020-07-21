@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a [routerLink]="['']" class="navbar-brand">Navbar</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarColor01"
+    aria-controls="navbarColor01"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="navbar-item">
+        <a [routerLink]="['']" href="#" class="nav-link">Home</a>
+      </li>
+      <li class="navbar-item dropdown" *ngIf="isAuth">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logs</a>
+        <div class="dropdown-menu">
+          <a [routerLink]="['logs', 'new']" class="dropdown-item">Create New Log</a>
+          <a [routerLink]="['logs', 'existing']" class="dropdown-item">Show Existing Logs</a>
+        </div>
+      </li>
+      <li class="navbar-item" *ngIf="isAuth && isAdmin">
+        <a [routerLink]="['users','list']" href="#" class="nav-link">Users</a>
+      </li>
+    </ul>
+
+    <button class="btn btn-primary navbar-item" (click)="onLoginClick()" *ngIf="!isAuth">Login</button>
+    <button class="btn btn-primary navbar-item" (click)="onLogoutClick()" *ngIf="isAuth">Logout</button>
+  </div>
+</nav>

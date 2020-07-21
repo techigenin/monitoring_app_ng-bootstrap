@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col">
+    <form [formGroup]="addCommentForm" (ngSubmit)="onAddEditCommentSubmit()">
+      <div class="form-group">
+        <label for="statement">Statement: </label>
+        <textarea
+          type="text"
+          formControlName="statement"
+          class="form-control"
+          rows="8"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="comment">Comment: </label>
+        <textarea
+          formControlName="comment"
+          class="form-control"
+          rows="8"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="concernLevel">Concern Level: </label>
+        <select formControlName="concernLevel" class="form-control">
+          <option value="0">Excellent</option>
+          <option value="1">Good</option>
+          <option value="2">Neutral</option>
+          <option value="3">Concerning</option>
+          <option value="4">Bad</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="time">Time: </label>
+        <input type="text" formControlName="time" class="form-control" />
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!addCommentForm.valid"
+      >
+        {{ commentId === 0 ? "Submit Comment" : "Update Comment" }}
+      </button>
+      <button type="button" class="btn btn-danger" (click)="cancelAddComment()">
+        Cancel
+      </button>
+    </form>
+  </div>
+</div>

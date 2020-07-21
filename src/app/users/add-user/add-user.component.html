@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-md-8 offset-sm-1 offset-md-2">
+    <form (ngSubmit)="onSubmit()" [formGroup]="addUserForm">
+      <div class="form-group">
+        <label for="firstName">First Name: </label>
+        <input
+          type="text"
+          formControlName="firstName"
+          id="first-name"
+          class="form-control"
+          (keyup)="clearErrors('firstName')"
+        />
+        <div
+          *ngIf="
+            !addUserForm.get('firstName')?.valid &&
+            addUserForm.get('firstName')?.touched
+          "
+          class="alert alert-danger"
+        >
+          <span *ngIf="addUserForm.get('firstName').errors['required']"
+            >Please enter a first name.</span
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name: </label>
+        <input
+          type="text"
+          formControlName="lastName"
+          id="last-name"
+          class="form-control"
+          (keyup)="clearErrors('lastName')"
+        />
+        <div
+          *ngIf="
+            !addUserForm.get('lastName').valid &&
+            addUserForm.get('lastName').touched
+          "
+          class="alert alert-danger"
+        >
+          <span *ngIf="addUserForm.get('lastName').errors['required']"
+            >Please enter a last name.</span
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number: </label>
+        <input
+          type="text"
+          formControlName="phone"
+          id="phone-number"
+          class="form-control"
+          placeholder="(123)456-7890"
+          (blur)="log()"
+          (keyup)="clearErrors('phone')"
+        />
+        <div
+          *ngIf="
+            !addUserForm.get('phone').valid &&
+            addUserForm.get('phone').touched
+          "
+          class="alert alert-danger"
+        >
+          <span *ngIf="addUserForm.get('phone').errors['required']">
+            Please enter a phone number
+          </span>
+          <span *ngIf="!addUserForm.get('phone').errors['required']">
+            Please enter a phone number
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email: </label>
+        <input
+          type="email"
+          formControlName="email"
+          id="email"
+          class="form-control"
+          placeholder="this@thatmail.com"
+          (keyup)="clearErrors('email')"
+        />
+        <div
+          *ngIf="
+            !addUserForm.get('email').valid &&
+            addUserForm.get('email').touched
+          "
+          class="alert alert-danger"
+        >
+          <span *ngIf="addUserForm.get('email').errors['required']">
+            Please enter an email.
+          </span>
+          <span *ngIf="addUserForm.get('email').errors['email']">
+            Please enter a valid email.
+          </span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="addUserForm.invalid">Add User</button>
+      <button class="btn btn-danger" (click)="cancelAdd()">Cancel</button>
+    </form>
+  </div>
+</div>

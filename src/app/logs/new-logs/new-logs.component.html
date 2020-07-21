@@ -1,0 +1,216 @@
+<div class="row">
+  <div class="col-md-8 col-sm-10 col-xs-12 offset-md-2 offset-sm-1">
+    <div class="card px-1 mb-2">
+      <form (ngSubmit)="onSubmit()" [formGroup]="newLogForm">
+        <div class="row">
+          <div class="col">
+            <div class="card bg-light mt-1">
+              <div class="card-header">
+                Call
+              </div>
+              <div class="call-body">
+                <div class="form-group">
+                  <label for="call-date"
+                    >Date:<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="date"
+                    formControlName="callDate"
+                    id="call-date"
+                    class="form-control"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('callDate').valid &&
+                      newLogForm.get('callDate').touched
+                    "
+                  >
+                    <span *ngIf="newLogForm.get('callDate').errors['required']"
+                      >Please enter a call date.</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="call-duration"
+                    >Duration:<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="callDuration"
+                    id="call-duration"
+                    class="form-control"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('callDuration').valid &&
+                      newLogForm.get('callDuration').touched
+                    "
+                  >
+                    <span
+                      *ngIf="newLogForm.get('callDuration').errors['required']"
+                      >Please enter a call duration.</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card text-white bg-secondary mt-1">
+              <div class="card-header">
+                Sales Person
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="sales-person-first-name"
+                    >First Name:<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="salesFirstName"
+                    id="sales-person-first-name"
+                    class="form-control"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('salesFirstName').valid &&
+                      newLogForm.get('salesFirstName').touched
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        newLogForm.get('salesFirstName').errors['required']
+                      "
+                      >Please enter a first name.</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="sales-person-last-name"
+                    >Last Name:<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="salesLastName"
+                    id="sales-person-last-name"
+                    class="form-control"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('salesLastName').valid &&
+                      newLogForm.get('salesLastName').touched
+                    "
+                  >
+                    <span
+                      *ngIf="newLogForm.get('salesLastName').errors['required']"
+                      >Please enter a last name.</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="sales-person-phone-number">Phone Number: </label>
+                  <input
+                    type="text"
+                    formControlName="salesPhoneNumber"
+                    id="sales-person-phone-number"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card bg-light mt-1">
+              <div class="card-header">
+                Client
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="client-first-name"
+                    >First Name:<span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    formControlName="clientFirstName"
+                    id="client-first-name"
+                    class="form-control"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('clientFirstName').valid &&
+                      newLogForm.get('clientFirstName').touched
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        newLogForm.get('clientFirstName').errors['required']
+                      "
+                      >Please enter a first name.</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="client-last-name"
+                    >Last Name:<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="clientLastName"
+                    id="client-last-name"
+                    class="form-control"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('clientLastName').valid &&
+                      newLogForm.get('clientLastName').touched
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        newLogForm.get('clientLastName').errors['required']
+                      "
+                      >Please enter a last name.</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="client-phone-number">Phone Number: </label>
+                  <input
+                    type="text"
+                    formControlName="clientPhoneNumber"
+                    id="client-phone-number"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col my-1">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!newLogForm.valid"
+            >
+              Submit
+            </button>
+            <button type="button" class="btn btn-warning" (click)="resetForm()">
+              Reset
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

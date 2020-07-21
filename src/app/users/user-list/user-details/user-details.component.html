@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div
+        class="card-header text-white bg-primary"
+        (click)="wasClicked = !wasClicked"
+      >
+        {{ user.firstName + " " + user.lastName }}
+      </div>
+      <div class="mx-auto" (click)="deleteUser()">X</div>
+      <div class="card-body text-white bg-secondary" *ngIf="wasClicked">
+        <p>Phone: {{ user.phone }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Status: {{ user.status }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="row mb-2">
+  <div class="col">
+    <button class="btn btn-primary" type="button" (click)="addComment()">
+      Add Comment
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div *ngIf="comments && comments.length > 0">
+      <div *ngFor="let comment of comments">
+        <app-comment-card [comment]="comment"></app-comment-card>
+      </div>
+      <div class="row" *ngIf="selectedCommentId">
+        <div class="col">
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="editComment()"
+          >
+            Edit Comment
+          </button>
+          <button class="btn btn-danger" type="button" (click)="cancelEdit()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!comments || comments.length <= 0">
+      <p>There are currently no comments for this log.</p>
+    </div>
+  </div>
+</div>

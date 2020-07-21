@@ -1,0 +1,15 @@
+<div
+  class="card text-white mb-3 col-md-8 offset-md-2"
+  [ngClass]="concernClass"
+  [ngStyle]="{ borderColor: isSelected ? 'black' : 'transparent' }"
+  (click)="selected()"
+>
+  <div class="card-head ml-auto"><a class="delete-button" (click)="confirmDelete()">X</a></div>
+  <div class="card-body">
+    <h4 class="card-title">{{ comment.time }}</h4>
+    <p class="card-text">
+      <strong>Statement: </strong>{{ comment.statement }}<br />
+      <strong>Comment: </strong>{{ comment.comment }}
+    </p>
+  </div>
+</div>

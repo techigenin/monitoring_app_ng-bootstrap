@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col">
+    <form #form="ngForm">
+      <div class="form-group">
+        <label for="logSelector">Select Log:</label>
+        <select
+          ngModel
+          name="logSelector"
+          id="log-selector"
+          class="form-control"
+          (change)="selectLog()"
+          #logSelector="ngModel"
+        >
+          <option value="" disabled selected>Please select a log</option>
+          <option *ngFor="let option of logOptions" [value]="option.id"
+            >{{ option.value }}
+          </option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+<router-outlet></router-outlet>
