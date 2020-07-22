@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { User } from '../user.model';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   users: User[] = [];
   showSubAreaArray: boolean[];
   showSubAreaArraySubject = new  Subject<number>();
@@ -34,6 +34,10 @@ export class UserListComponent implements OnInit {
 
     this.users = this.usersService.users;
     this.showSubAreaArray = new Array(this.users.length).fill(false);
+  }
+
+  ngOnDestroy() {
+    this.usersSub?.unsubscribe();
   }
 
   deleteUser(id: number) {

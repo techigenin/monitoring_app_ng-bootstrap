@@ -12,6 +12,7 @@ import { AddUserComponent } from './users/add-user/add-user.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 import { ShowCommentsComponent } from './comments/show-comments/show-comments.component';
 import { AddEditCommentComponent } from './comments/add-edit-comment/add-edit-comment.component';
+import { UsersResolverService } from './users/users-resolver.service';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -40,7 +41,11 @@ const routes: Routes = [
     component: UsersComponent,
     canActivate: [AuthGuard, AdminGuard],
     children: [
-      { path: 'list', component: UserListComponent },
+      {
+        path: 'list',
+        component: UserListComponent,
+        resolve: [UsersResolverService],
+      },
       { path: 'add', component: AddUserComponent },
     ],
   },

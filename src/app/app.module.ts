@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRouterModule } from './app-router.module';
 
 import { AppComponent } from './app.component';
@@ -37,7 +38,13 @@ import { CommentCardComponent } from './comments/comment-card/comment-card.compo
     CommentCardComponent,
     UserDetailsComponent,
   ],
-  imports: [BrowserModule, AppRouterModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    AppRouterModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [UserWarningComponent],
