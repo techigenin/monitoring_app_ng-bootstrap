@@ -7,9 +7,9 @@
       >
         {{ user.firstName + " " + user.lastName }}
       </div>
-      <div class="mx-auto" (click)="deleteUser()">X</div>
+      <div class="mx-auto delete-button" (click)="deleteUser()">X</div>
       <div class="card-body text-white bg-secondary" *ngIf="wasClicked">
-        <p>Phone: {{ user.phone }}</p>
+        <p>Phone: {{ user.phoneNumber }}</p>
         <p>Email: {{ user.email }}</p>
         <p>Status: {{ user.status }}</p>
       </div>

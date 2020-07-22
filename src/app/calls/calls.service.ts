@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { Call } from './call.model';
 import { SalesPersonService } from '../shared/sales-person.service';
 import { ClientService } from '../shared/client.service';
-import { SalesPerson } from '../shared/sales-person.model';
-import { Client } from '../shared/client.model';
 
 @Injectable({ providedIn: 'root' })
 export class CallsService {

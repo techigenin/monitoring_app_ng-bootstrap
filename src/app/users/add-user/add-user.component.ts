@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsersService } from '../users.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../user.model';
+import { RegexService } from 'src/app/shared/regex.service';
 
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css'],
+  providers: [RegexService]
 })
 export class AddUserComponent implements OnInit {
   addUserForm: FormGroup;
@@ -19,8 +17,9 @@ export class AddUserComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UsersService
-    ) {}
+    private userService: UsersService,
+    private regexService: RegexService
+  ) {}
 
   ngOnInit(): void {
     const ids = this.userService.users.map((a) => a.id);
@@ -28,28 +27,26 @@ export class AddUserComponent implements OnInit {
     this.addUserForm = new FormGroup({
       firstName: new FormControl(null, [Validators.required]),
       lastName: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [
+      phoneNumber: new FormControl(null, [
         Validators.required,
-        Validators.pattern(
-          new RegExp(
-            '[(][0-9]{3}[)][0-9]{3}[-][0-9]{4}|[0-9]{3}[-][0-9]{3}[-][0-9]{4}|[0-9]{10}'
-          )
-        ),
+        Validators.pattern(this.regexService.phoneNumberRegex),
       ]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.email]),
     });
   }
 
   onSubmit() {
-    const formValue = this.addUserForm.value;
-    const newUser = {...formValue, id: 0, status: ''};
+    const newUser = new User(
+      0,
+      this.addUserForm.get('firstName').value,
+      this.addUserForm.get('lastName').value,
+      this.addUserForm.get('phoneNumber').value,
+      this.addUserForm.get('email').value,
+      ''
+    );
 
     this.userService.addUser(newUser);
-    this.router.navigate(['list'], {relativeTo: this.route.parent});
-  }
-
-  log() {
-    const obj = this.addUserForm.get('phone');
+    this.router.navigate(['list'], { relativeTo: this.route.parent });
   }
 
   clearErrors(input: string) {
@@ -58,6 +55,6 @@ export class AddUserComponent implements OnInit {
   }
 
   cancelAdd() {
-    this.router.navigate(['list'], {relativeTo: this.route.parent});
+    this.router.navigate(['list'], { relativeTo: this.route.parent });
   }
 }

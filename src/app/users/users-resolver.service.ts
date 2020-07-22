@@ -8,21 +8,18 @@ import {
 import { User } from './user.model';
 import { UsersService } from './users.service';
 import { DataStorageService } from '../shared/data-storage.service';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UsersResolverService implements Resolve<User[]> {
   constructor(
-    private userService: UsersService,
-    private dataStorageService: DataStorageService
+    private usersService: UsersService,
+    private http: HttpClient,
   ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const users = this.userService.users;
-
-    if (users.length === 0) {
-      return this.dataStorageService.fetchUsers();
-    } else {
-      return users;
-    }
+    return this.usersService.fetchUsers();
   }
 }

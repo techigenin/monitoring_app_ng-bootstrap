@@ -11,22 +11,4 @@ export class DataStorageService {
     private usersService: UsersService,
     private http: HttpClient
   ) {}
-
-  fetchUsers() {
-    this.http
-      .get('http://localhost:8080/log-server/api/users/', {responseType: 'json'})
-      .subscribe(user => {
-        console.log(user);
-      }, error => {
-        console.log(error);
-      });
-
-    return this.http
-      .get<User[]>('http://localhost:8080/log-server/api/users/')
-      .pipe(
-        tap( users => {
-          this.usersService.setUsers(users);
-        })
-      );
-  }
 }
