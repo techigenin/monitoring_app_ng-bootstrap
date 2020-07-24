@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+
 import { SalesPerson } from './sales-person.model';
 
 @Injectable({ providedIn: 'root' })
 export class SalesPersonService {
-  private salesPersonArray: SalesPerson[] = [
-    {
-      id: 1,
-      firstName: 'Lewis',
-      lastName: 'Wetzel',
-      phoneNumber: '190-319-0609',
-    },
-    {
-      id: 2,
-      firstName: 'Bern',
-      lastName: 'Venters',
-      phoneNumber: '191-233-5184',
-    },
-    {
-      id: 3,
-      firstName: 'Jane',
-      lastName: 'Withersteen',
-      phoneNumber: '185-718-3018',
-    },
-  ];
+  salesPersonsChanged = new Subject<SalesPerson[]>();
+
+  constructor(private http: HttpClient) {}
+
+  private salesPersonArray: SalesPerson[] = [];
+
+  fetchSalesPersons() {
+    return this.http
+      .get<SalesPerson[]>(environment.baseURL + 'salesPersons')
+      .pipe(
+        tap((salesPersons) => {
+          this.salesPersonArray = salesPersons;
+        })
+      );
+  }
 
   get salesPersons(): SalesPerson[] {
     return this.salesPersonArray.slice();
@@ -32,25 +32,13 @@ export class SalesPersonService {
     return this.salesPersons.find((s) => s.id === +id);
   }
 
-  getSalesPersonName(id: number) {
-    const salesPerson = this.salesPersons.find(s => s.id === +id);
-
-    return `${salesPerson.firstName} ${salesPerson.lastName}`;
-  }
-
-  addSalesPerson(salesPersonInfo: {
-    firstName: string;
-    lastName: string;
-    phoneNumber?: string;
-  }): number {
-    const newSalesPerson = { ...salesPersonInfo, id: this.nextId() };
-
-    this.salesPersonArray.push(newSalesPerson);
-
-    return newSalesPerson.id;
-  }
-
-  nextId(): number {
-    return Math.max(...this.salesPersonArray.map((s) => s.id)) + 1;
+  addSalesPerson(newSalesPerson: SalesPerson): Observable<SalesPerson> {
+    return this.http
+      .post<SalesPerson>(environment.baseURL + 'salesPersons', newSalesPerson)
+      .pipe(
+        tap((salesPerson: SalesPerson) => {
+          this.salesPersonArray.push(salesPerson);
+        })
+      );
   }
 }

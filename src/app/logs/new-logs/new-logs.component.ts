@@ -63,41 +63,68 @@ export class NewLogsComponent implements OnInit {
 
   onSubmit() {
     if (this.newLogForm.valid) {
-      const salesPerson = new SalesPerson(
-        0,
-        this.newLogForm.get('salesFirstName').value,
-        this.newLogForm.get('salesLastName').value,
-        this.newLogForm.get('salesPhoneNumber').value
-      );
-      const salesPersonId = this.salesPersonService.addSalesPerson(salesPerson);
+      let newSalesPerson: SalesPerson;
+      let newClient: Client;
+      let newCall: Call;
 
-      const client = new Client(
-        0,
-        this.newLogForm.get('clientFirstName').value,
-        this.newLogForm.get('clientLastName').value,
-        this.newLogForm.get('clientPhoneNumber').value
-      );
-      const clientId = this.clientService.addClient(client);
-
-      const call = new Call(
-        0,
-        new Date(this.newLogForm.get('callDate').value),
-        this.newLogForm.get('callDuration').value,
-        { ...salesPerson, id: salesPersonId },
-        { ...client, id: clientId }
-      );
-      const callId = this.callService.addCall(call);
-
-      const log = new Log(
-        0,
-        {...call, id: callId},
-        this.userService.getCurrentListner(),
-        new Date()
-      );
-      this.logService.addLog(log);
-
-      this.router.navigate(['existing'], { relativeTo: this.route.parent });
+      newSalesPerson = this.buildSalesPerson(newSalesPerson);
+      newClient = this.buildClient(newClient);
+      // salesPerson = this.salesPersonService.addSalesPerson(salesPerson);
+      this.salesPersonService.addSalesPerson(newSalesPerson).subscribe((salesPerson) => {
+        newSalesPerson = salesPerson;
+        this.clientService.addClient(newClient).subscribe((client) => {
+          newClient = client;
+          newCall = this.buildCall(newCall, newSalesPerson, newClient);
+          this.callService.addCall(newCall).subscribe(call => {
+            const newLog = this.buildLog(call);
+            console.log(newLog);
+            this.logService.addLog(newLog).subscribe(() => {
+              this.router.navigate(['existing'], { relativeTo: this.route.parent });
+            });
+          });
+        });
+      });
     }
+  }
+
+  private buildLog(call: Call) {
+    return new Log(
+      0,
+      { ...call },
+      this.userService.getCurrentUser(),
+      new Date()
+    );
+  }
+
+  private buildCall(call: Call, salesPerson: SalesPerson, client: Client) {
+    call = new Call(
+      0,
+      new Date(this.newLogForm.get('callDate').value),
+      this.newLogForm.get('callDuration').value,
+      { ...salesPerson },
+      { ...client }
+    );
+    return call;
+  }
+
+  private buildClient(client: Client) {
+    client = new Client(
+      0,
+      this.newLogForm.get('clientFirstName').value,
+      this.newLogForm.get('clientLastName').value,
+      this.newLogForm.get('clientPhoneNumber').value
+    );
+    return client;
+  }
+
+  private buildSalesPerson(salesPerson: SalesPerson) {
+    salesPerson = new SalesPerson(
+      0,
+      this.newLogForm.get('salesFirstName').value,
+      this.newLogForm.get('salesLastName').value,
+      this.newLogForm.get('salesPhoneNumber').value
+    );
+    return salesPerson;
   }
 
   resetForm() {

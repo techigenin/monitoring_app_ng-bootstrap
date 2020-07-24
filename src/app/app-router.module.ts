@@ -12,13 +12,20 @@ import { AddUserComponent } from './users/add-user/add-user.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 import { ShowCommentsComponent } from './comments/show-comments/show-comments.component';
 import { AddEditCommentComponent } from './comments/add-edit-comment/add-edit-comment.component';
-import { UsersResolverService } from './users/users-resolver.service';
+import * as Resolvers from './shared/resolvers.service';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   {
     path: 'logs',
     component: LogsComponent,
+    resolve: [
+      Resolvers.LogsResolverService,
+      Resolvers.CallResolverService,
+      Resolvers.SalesPersonResolver,
+      Resolvers.ClientResolver,
+      Resolvers.UsersResolverService
+    ],
     children: [
       { path: 'new', component: NewLogsComponent },
       {
@@ -44,7 +51,7 @@ const routes: Routes = [
       {
         path: 'list',
         component: UserListComponent,
-        resolve: [UsersResolverService],
+        resolve: [Resolvers.UsersResolverService],
       },
       { path: 'add', component: AddUserComponent },
     ],

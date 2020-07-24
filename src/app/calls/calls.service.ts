@@ -1,36 +1,25 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 import { Call } from './call.model';
-import { SalesPersonService } from '../shared/sales-person.service';
-import { ClientService } from '../shared/client.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CallsService {
-  private callsArray: Call[] = [
-    {
-      id: 1,
-      salesPerson: this.salesPersonService.getSalesPerson(1),
-      client: this.clientService.getClient(3),
-      date: new Date('05-10-2020'),
-      duration: '00:15:23',
-    },
-    {
-      id: 2,
-      salesPerson: this.salesPersonService.getSalesPerson(2),
-      client: this.clientService.getClient(1),
-      date: new Date('04-15-2020'),
-      duration: '00:30:46',
-    },
-    {
-      id: 3,
-      salesPerson: this.salesPersonService.getSalesPerson(3),
-      client: this.clientService.getClient(2),
-      date: new Date('06-01-2020'),
-      duration: '00:45:01',
-    },
-  ];
+  private callsArray: Call[] = [];
+  callsChanged = new Subject<Call[]>();
 
-  constructor(private salesPersonService: SalesPersonService, private clientService: ClientService) {}
+  constructor(private http: HttpClient) {}
+
+  fetchCalls() {
+    return this.http.get<Call[]>(environment.baseURL + 'calls').pipe(
+      tap((calls) => {
+        this.callsArray = calls;
+      })
+    );
+  }
 
   get calls() {
     return this.callsArray.slice();
@@ -40,15 +29,12 @@ export class CallsService {
     return this.calls.find((c) => c.id === +id);
   }
 
-  addCall(callInfo: Call): number {
-    const newCall = {...callInfo, id: this.nextId()};
-
-    this.callsArray.push(newCall);
-
-    return newCall.id;
-  }
-
-  nextId(): number {
-    return Math.max(...this.callsArray.map(c => c.id)) + 1;
+  addCall(call: Call): Observable<Call> {
+    return this.http.post<Call>(environment.baseURL + 'calls', call).pipe(
+      tap((c) => {
+        this.callsArray.push(c);
+        this.callsChanged.next(this.calls);
+      })
+    );
   }
 }
