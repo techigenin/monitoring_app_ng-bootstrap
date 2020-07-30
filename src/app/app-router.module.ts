@@ -12,6 +12,7 @@ import { AddUserComponent } from './users/add-user/add-user.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 import { ShowCommentsComponent } from './comments/show-comments/show-comments.component';
 import { AddEditCommentComponent } from './comments/add-edit-comment/add-edit-comment.component';
+import * as Resolvers from './shared/resolvers.service';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -23,6 +24,14 @@ const routes: Routes = [
       {
         path: 'existing',
         component: ExistingLogsComponent,
+        resolve: [
+          Resolvers.SalesPersonResolver,
+          Resolvers.ClientResolver,
+          Resolvers.UsersResolverService,
+          Resolvers.CommentsResolver,
+          Resolvers.CallResolverService,
+          Resolvers.LogsResolverService,
+        ],
         children: [
           { path: 'show/:id', component: ShowCommentsComponent },
           { path: 'comments/add/:logId', component: AddEditCommentComponent },
@@ -38,10 +47,14 @@ const routes: Routes = [
   {
     path: 'users',
     component: UsersComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard],
     children: [
-      { path: 'list', component: UserListComponent },
-      { path: 'add', component: AddUserComponent },
+      {
+        path: 'list',
+        component: UserListComponent,
+        resolve: [Resolvers.UsersResolverService],
+      },
+      { path: 'add', component: AddUserComponent, canActivate: [AuthGuard, AdminGuard] },
     ],
   },
 ];

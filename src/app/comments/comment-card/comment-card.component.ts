@@ -1,15 +1,14 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Comment } from '../comment.model';
-import { ConcernLevel } from '../../shared/concern-level.enum';
+import { ConcernLevel } from '../../shared/concern-level.constants';
 import { CommentsService } from '../comments.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-comment-card',
   templateUrl: './comment-card.component.html',
-  styles: [`.card { border: 2px solid; }
-  .delete-button {cursor: pointer;}`]
+  styleUrls: ['./comment-card.component.css']
 })
 export class CommentCardComponent implements OnInit, OnDestroy {
   @Input() comment: Comment;
@@ -21,20 +20,20 @@ export class CommentCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     switch (this.comment.concernLvl) {
-      case ConcernLevel.Excellent:
-        this.concernClass = 'bg-success';
+      case ConcernLevel.Commendable:
+        this.concernClass = 'card-commendable';
         break;
-      case ConcernLevel.Good:
-        this.concernClass = 'bg-primary';
+      case ConcernLevel.Caution:
+        this.concernClass = 'card-caution';
         break;
-      case ConcernLevel.Concerning:
-        this.concernClass = 'bg-warning';
+      case ConcernLevel.Problematic:
+        this.concernClass = 'card-problematic';
         break;
-      case ConcernLevel.Bad:
-        this.concernClass = 'bg-danger';
+      case ConcernLevel.Severe:
+        this.concernClass = 'card-severe';
         break;
       default:
-        this.concernClass = 'bg-secondary';
+        this.concernClass = '';
         break;
     }
     this.selectedSub = this.commentService.commentSelected.subscribe(

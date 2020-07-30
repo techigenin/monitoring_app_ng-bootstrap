@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { RegexService } from '../../shared/regex.service';
 import { CommentsService } from '../comments.service';
@@ -8,8 +9,8 @@ import { Log } from '../../logs/log.model';
 import { Comment } from '../comment.model';
 import { TimestampService } from '../../shared/timestamp.service';
 import { LogsService } from '../../logs/logs.service';
-import { ConcernLevel } from 'src/app/shared/concern-level.enum';
-import { Subscription } from 'rxjs';
+import { ConcernLevel } from '../../shared/concern-level.constants';
+import { CommentReasons } from '../../shared/reasons.constants';
 
 @Component({
   selector: 'app-edit-add-comment',
@@ -20,15 +21,16 @@ import { Subscription } from 'rxjs';
 export class AddEditCommentComponent implements OnInit, OnDestroy {
   addCommentForm: FormGroup;
   selectedLog: Log;
-
-  commentId = 0;
-
   paramsSub: Subscription;
-
   statement: string;
   comment: string;
   concernLevel: ConcernLevel;
+  reason: string;
   time: string;
+
+  concernLvls = ConcernLevel.concernLevels;
+  reasons = CommentReasons.Reasons;
+  commentId = 0;
 
   constructor(
     private regexService: RegexService,
@@ -54,12 +56,14 @@ export class AddEditCommentComponent implements OnInit, OnDestroy {
         this.commentId = activeComment.id;
         this.statement = activeComment.statement;
         this.comment = activeComment.comment;
+        this.reason = activeComment.reason;
         this.concernLevel = activeComment.concernLvl;
         this.time = activeComment.time;
       }
     });
 
     this.initForm();
+
   }
 
   private initForm() {
@@ -67,6 +71,7 @@ export class AddEditCommentComponent implements OnInit, OnDestroy {
       statement: new FormControl(this.statement, [Validators.required]),
       comment: new FormControl(this.comment, [Validators.required]),
       concernLevel: new FormControl(this.concernLevel, [Validators.required]),
+      commentReason: new FormControl(this.reason, [Validators.required]),
       time: new FormControl(this.time, [
         Validators.required,
         Validators.pattern(this.regexService.timeStampRegex),
@@ -81,16 +86,19 @@ export class AddEditCommentComponent implements OnInit, OnDestroy {
   onAddEditCommentSubmit() {
     const formValues = this.addCommentForm.value;
 
-    const commentInfo: Comment = {
+    const newComment: Comment = {
       id: this.commentId,
       log: this.selectedLog,
       statement: formValues.statement,
-      concernLvl: +formValues.concernLevel,
+      concernLvl: formValues.concernLevel,
+      reason: formValues.commentReason,
       comment: formValues.comment,
       time: this.timestampService.formatTimestamps(formValues.time),
     };
 
-    this.commentsService.addUpdateComment(commentInfo);
+    console.log(newComment);
+
+    this.commentsService.addUpdateComment(newComment);
 
     this.router.navigate(['show', this.selectedLog.id], {
       relativeTo: this.route.parent,

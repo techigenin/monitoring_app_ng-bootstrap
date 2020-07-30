@@ -2,40 +2,28 @@ import { Injectable, OnInit } from '@angular/core';
 
 import { User } from './user.model';
 import { Subject } from 'rxjs';
-import { UserStatus } from '../shared/user-status.constants';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class UsersService{
+export class UsersService {
+  private userArray: User[] = [];
+  usersChanged = new Subject<User[]>();
 
-  private userArray: User[] = [
-    {
-      id: 1,
-      firstName: 'Bob',
-      lastName: 'Robertson',
-      phone: '(123)45617890',
-      email: 'bob.robertson@thatmail.com',
-      status: UserStatus.admin
-    },
-    {
-      id: 2,
-      firstName: 'Carla',
-      lastName: 'Charleston',
-      phone: '(098)765-4321',
-      email: 'carla.charlston@thatmail.com',
-      status: UserStatus.user
-    },
-    {
-      id: 3,
-      firstName: 'Danny',
-      lastName: 'Davis',
-      phone: '(567)123-5678',
-      email: 'danny.davis@thatmail.com',
-      status: UserStatus.guest
-    },
-  ];
-  usersChanged = new Subject();
+  constructor(private http: HttpClient) {}
 
-  getCurrentListner() {
+  fetchUsers() {
+    return this.http
+      .get<User[]>(environment.baseURL +  'users/')
+      .pipe(
+        tap((users) => {
+          this.setUsers(users);
+        })
+      );
+  }
+
+  getCurrentUser() {
     return this.userArray[0];
   }
 
@@ -44,20 +32,28 @@ export class UsersService{
   }
 
   getUser(id: number): User {
-    return this.users.find(u => u.id === +id);
+    return this.users.find((u) => u.id === id);
+  }
+
+  setUsers(users: User[]) {
+    this.userArray = users;
+    this.usersChanged.next(this.userArray);
   }
 
   addUser(newUser: User) {
-    this.userArray.push({
-      ...newUser,
-      id: this.nextId(),
-    });
-    this.usersChanged.next();
+    this.http
+      .post<User>(environment.baseURL + 'users/', newUser)
+      .subscribe((user: User) => {
+        this.userArray.push(user);
+        this.usersChanged.next(this.userArray.slice());
+      });
   }
 
   deleteUser(id: number) {
-    this.userArray = this.userArray.filter(u => u.id !== id);
-    this.usersChanged.next();
+    this.http.delete(environment.baseURL + 'users/' + id).subscribe(() => {
+      this.userArray = this.userArray.filter((u) => u.id !== id);
+      this.usersChanged.next(this.userArray);
+    });
   }
 
   private nextId() {

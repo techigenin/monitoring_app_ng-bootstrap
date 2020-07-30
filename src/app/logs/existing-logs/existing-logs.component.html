@@ -12,7 +12,10 @@
           #logSelector="ngModel"
         >
           <option value="" disabled selected>Please select a log</option>
-          <option *ngFor="let option of logOptions" [value]="option.id"
+          <option
+            *ngFor="let option of logOptions"
+            [value]="option.id"
+            [disabled]="logOptions === []"
             >{{ option.value }}
           </option>
         </select>

@@ -1,18 +1,18 @@
-<div class="card bg-light">
-  <div class="card bg-primary m-2">
-    <ul class="list-group">
+<div class="row">
+  <div class="col">
+    <div class="card bg-light">
       <div *ngFor="let user of users; index as i">
         <app-user-details [user]="user" [itemNum]="i"></app-user-details>
       </div>
-    </ul>
-  </div>
-  <div class="ml-2 mb-1">
-    <button
-      class="btn btn-primary add-button"
-      (click)="addUser()"
-      type="button"
-    >
-      Add User
-    </button>
+      <div class="ml-2 my-1" *ngIf="isAdmin">
+        <button
+          class="btn btn-primary add-button"
+          (click)="addUser()"
+          type="button"
+        >
+          Add User
+        </button>
+      </div>
+    </div>
   </div>
 </div>

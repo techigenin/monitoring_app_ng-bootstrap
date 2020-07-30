@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a [routerLink]="['']" class="navbar-brand">Navbar</a>
+  <a [routerLink]="['']" class="navbar-brand">
+    <img src="../../assets/magnifying_glass_icon.png"/>
+  </a>
   <button
     class="navbar-toggler"
     type="button"
@@ -14,9 +16,6 @@
 
   <div class="navbar-collapse collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
-      <li class="navbar-item">
-        <a [routerLink]="['']" href="#" class="nav-link">Home</a>
-      </li>
       <li class="navbar-item dropdown" *ngIf="isAuth">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logs</a>
         <div class="dropdown-menu">
@@ -24,7 +23,7 @@
           <a [routerLink]="['logs', 'existing']" class="dropdown-item">Show Existing Logs</a>
         </div>
       </li>
-      <li class="navbar-item" *ngIf="isAuth && isAdmin">
+      <li class="navbar-item" *ngIf="isAuth">
         <a [routerLink]="['users','list']" href="#" class="nav-link">Users</a>
       </li>
     </ul>

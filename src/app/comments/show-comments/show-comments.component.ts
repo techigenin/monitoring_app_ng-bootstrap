@@ -49,7 +49,7 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.setComments(this.commentsService.getCommentsForLog(this.selectedLog.id));
+    // this.setComments(this.commentsService.getCommentsForLog(this.selectedLog.id));
   }
 
   ngOnDestroy() {
