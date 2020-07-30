@@ -4,12 +4,24 @@
   [ngStyle]="{ borderColor: isSelected ? 'black' : 'transparent' }"
   (click)="selected()"
 >
-  <div class="card-head ml-auto"><a class="delete-button" (click)="confirmDelete()">X</a></div>
+  <div class="card-head">
+    <div class="row">
+      <div class="col-11">
+        <h4 class="card-title">{{ comment.time }}</h4>
+      </div>
+      <div class="col">
+        <a class="delete-button" (click)="confirmDelete()">X</a>
+      </div>
+    </div>
+  </div>
   <div class="card-body">
-    <h4 class="card-title">{{ comment.time }}</h4>
-    <p class="card-text">
-      <strong>Statement: </strong>{{ comment.statement }}<br />
-      <strong>Comment: </strong>{{ comment.comment }}
-    </p>
+    <div class="row">
+      <div class="col">
+        <p class="card-text">
+          <strong>Statement: </strong>{{ comment.statement }}<br />
+          <strong>Comment: </strong>{{ comment.comment }}
+        </p>
+      </div>
+    </div>
   </div>
 </div>

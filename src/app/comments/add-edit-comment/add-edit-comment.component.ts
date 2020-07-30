@@ -20,15 +20,14 @@ import { Subscription } from 'rxjs';
 export class AddEditCommentComponent implements OnInit, OnDestroy {
   addCommentForm: FormGroup;
   selectedLog: Log;
-
-  commentId = 0;
-
   paramsSub: Subscription;
-
   statement: string;
   comment: string;
   concernLevel: ConcernLevel;
   time: string;
+
+  concernLvls = ConcernLevel.concernLevels;
+  commentId = 0;
 
   constructor(
     private regexService: RegexService,
@@ -81,16 +80,18 @@ export class AddEditCommentComponent implements OnInit, OnDestroy {
   onAddEditCommentSubmit() {
     const formValues = this.addCommentForm.value;
 
-    const commentInfo: Comment = {
+    const newComment: Comment = {
       id: this.commentId,
       log: this.selectedLog,
       statement: formValues.statement,
-      concernLvl: +formValues.concernLevel,
+      concernLvl: formValues.concernLevel,
       comment: formValues.comment,
       time: this.timestampService.formatTimestamps(formValues.time),
     };
 
-    this.commentsService.addUpdateComment(commentInfo);
+    console.log(newComment);
+
+    this.commentsService.addUpdateComment(newComment);
 
     this.router.navigate(['show', this.selectedLog.id], {
       relativeTo: this.route.parent,
