@@ -21,6 +21,20 @@
       <div class="form-group">
         <label for="concernLevel">Concern Level: </label>
         <select formControlName="concernLevel" class="form-control">
+          <option
+            value="{{ concernlvl }}"
+            *ngFor="let concernlvl of concernLvls"
+          >
+            {{ concernlvl }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="commentReason">Reason: </label>
+        <select formControlName="commentReason" class="form-control">
+          <option value="{{ reason.identifier }}" *ngFor="let reason of reasons">
+            {{ reason.description }}
+          </option>
         </select>
       </div>
       <div class="form-group">

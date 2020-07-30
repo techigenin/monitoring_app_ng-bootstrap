@@ -20,7 +20,6 @@ export class CommentsService {
   fetchComments() {
     return this.http.get<Comment[]>(environment.baseURL + 'comments').pipe(
       tap((comments: Comment[]) => {
-        console.log(comments);
         this.commentArray = comments;
         this.commentsChanged.next(comments);
       })
