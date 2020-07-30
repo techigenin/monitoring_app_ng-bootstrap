@@ -10,11 +10,13 @@ import { Log } from '../logs/log.model';
 import { Call } from '../calls/call.model';
 import { Client } from './client.model';
 import { SalesPerson } from './sales-person.model';
+import { Comment } from '../comments/comment.model';
 import { UsersService } from '../users/users.service';
 import { LogsService } from '../logs/logs.service';
 import { CallsService } from '../calls/calls.service';
 import { ClientService } from './client.service';
 import { SalesPersonService } from './sales-person.service';
+import { CommentsService } from '../comments/comments.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsersResolverService implements Resolve<User[]> {
@@ -57,5 +59,14 @@ export class SalesPersonResolver implements Resolve<SalesPerson[]> {
 
   resolve(route: ActivatedRouteSnapshot) {
     return this.salesPersonService.fetchSalesPersons();
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class CommentsResolver implements Resolve<Comment[]> {
+  constructor(private commentsService: CommentsService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.commentsService.fetchComments();
   }
 }

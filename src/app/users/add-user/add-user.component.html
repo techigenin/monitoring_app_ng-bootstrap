@@ -75,6 +75,7 @@
           formControlName="email"
           id="email"
           class="form-control"
+          (keyup)="clearErrors('email')"
         />
         <div
           *ngIf="
@@ -92,7 +93,7 @@
         </div>
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="addUserForm.invalid">Add User</button>
-      <button class="btn btn-danger" (click)="cancelAdd()">Cancel</button>
+      <button class="btn btn-danger" type="button" (click)="cancelAdd()">Cancel</button>
     </form>
   </div>
 </div>

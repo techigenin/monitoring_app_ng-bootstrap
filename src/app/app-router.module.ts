@@ -19,18 +19,19 @@ const routes: Routes = [
   {
     path: 'logs',
     component: LogsComponent,
-    resolve: [
-      Resolvers.LogsResolverService,
-      Resolvers.CallResolverService,
-      Resolvers.SalesPersonResolver,
-      Resolvers.ClientResolver,
-      Resolvers.UsersResolverService
-    ],
     children: [
       { path: 'new', component: NewLogsComponent },
       {
         path: 'existing',
         component: ExistingLogsComponent,
+        resolve: [
+          Resolvers.SalesPersonResolver,
+          Resolvers.ClientResolver,
+          Resolvers.UsersResolverService,
+          Resolvers.CommentsResolver,
+          Resolvers.CallResolverService,
+          Resolvers.LogsResolverService,
+        ],
         children: [
           { path: 'show/:id', component: ShowCommentsComponent },
           { path: 'comments/add/:logId', component: AddEditCommentComponent },
@@ -46,14 +47,14 @@ const routes: Routes = [
   {
     path: 'users',
     component: UsersComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'list',
         component: UserListComponent,
         resolve: [Resolvers.UsersResolverService],
       },
-      { path: 'add', component: AddUserComponent },
+      { path: 'add', component: AddUserComponent, canActivate: [AuthGuard, AdminGuard] },
     ],
   },
 ];

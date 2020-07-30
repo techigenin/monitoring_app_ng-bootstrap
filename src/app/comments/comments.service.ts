@@ -1,67 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import { Comment } from './comment.model';
-import { ConcernLevel } from '../shared/concern-level.enum';
+import { ConcernLevel } from '../shared/concern-level.constants';
 import { LogsService } from '../logs/logs.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { tap, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsService {
-  commentsChanged = new Subject();
+  private commentArray: Comment[] = [];
+
+  commentsChanged = new Subject<Comment[]>();
   commentSelected = new Subject<number>();
 
-  constructor(private logsService: LogsService) {}
+  constructor(private http: HttpClient, private logsService: LogsService) {}
 
-  private commentArray: Comment[] = [
-    {
-      id: 1,
-      log: this.logsService.getLog(1),
-      concernLvl: ConcernLevel.Good,
-      statement: 'Oh Gee Whiz',
-      comment: 'So much good!',
-      time: '01:01:01',
-    },
-    {
-      id: 2,
-      log: this.logsService.getLog(1),
-      concernLvl: ConcernLevel.Excellent,
-      statement: 'So exciting',
-      comment: 'Even more good!',
-      time: '3:01:00',
-    },
-    {
-      id: 3,
-      log: this.logsService.getLog(1),
-      concernLvl: ConcernLevel.Concerning,
-      statement: 'The sun is green',
-      comment: 'But why..?',
-      time: '04:05:07',
-    },
-    {
-      id: 4,
-      log: this.logsService.getLog(2),
-      concernLvl: ConcernLevel.Bad,
-      statement: 'Something bad',
-      comment: 'Oh No!',
-      time: '01:03:02',
-    },
-    {
-      id: 5,
-      log: this.logsService.getLog(3),
-      concernLvl: ConcernLevel.Bad,
-      statement: 'Creepy Crawlers',
-      comment: '...!',
-      time: '03:02:01',
-    },
-    {
-      id: 6,
-      log: this.logsService.getLog(3),
-      concernLvl: ConcernLevel.Neutral,
-      statement: 'And then we had ice cream',
-      comment: 'Me too..?',
-      time: '04:04:04',
-    },
-  ];
+  fetchComments() {
+    return this.http.get<Comment[]>(environment.baseURL + 'comments').pipe(
+      tap((comments: Comment[]) => {
+        console.log(comments);
+        this.commentArray = comments;
+        this.commentsChanged.next(comments);
+      })
+    );
+  }
 
   get comments() {
     return this.commentArray.slice();
@@ -92,13 +56,13 @@ export class CommentsService {
 
     this.commentArray.push(newComment);
 
-    this.commentsChanged.next();
+    this.commentsChanged.next(this.comments);
 
     return newComment.id;
   }
 
   private updateComment(commentInfo: Comment) {
-    const comment = {...commentInfo, concernLvl: +commentInfo.concernLvl};
+    const comment = { ...commentInfo, concernLvl: +commentInfo.concernLvl };
 
     for (const [i, c] of this.commentArray.entries()) {
       if (c.id === comment.id) {
@@ -107,7 +71,7 @@ export class CommentsService {
       }
     }
 
-    this.commentsChanged.next();
+    this.commentsChanged.next(this.comments);
   }
 
   deleteComment(id: number) {

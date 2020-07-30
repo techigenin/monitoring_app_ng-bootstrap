@@ -8,7 +8,7 @@ import { Log } from '../../logs/log.model';
 import { Comment } from '../comment.model';
 import { TimestampService } from '../../shared/timestamp.service';
 import { LogsService } from '../../logs/logs.service';
-import { ConcernLevel } from 'src/app/shared/concern-level.enum';
+import { ConcernLevel } from 'src/app/shared/concern-level.constants';
 import { Subscription } from 'rxjs';
 
 @Component({

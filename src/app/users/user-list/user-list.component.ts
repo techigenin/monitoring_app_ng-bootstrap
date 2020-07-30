@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { UsersService } from '../users.service';
 import { User } from '../user.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -15,9 +16,11 @@ export class UserListComponent implements OnInit, OnDestroy {
   showSubAreaArray: boolean[];
   showSubAreaArraySubject = new  Subject<number>();
   usersSub: Subscription;
+  isAdmin: boolean;
 
   constructor(
     private usersService: UsersService,
+    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -33,6 +36,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       console.log(this.showSubAreaArray);
     });
 
+    this.isAdmin = this.authService.isAdmin;
     this.users = this.usersService.users;
     this.showSubAreaArray = new Array(this.users.length).fill(false);
   }

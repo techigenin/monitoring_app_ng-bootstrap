@@ -15,7 +15,7 @@ export class UsersService {
 
   fetchUsers() {
     return this.http
-      .get<User[]>('http://localhost:8080/log-server/api/users/')
+      .get<User[]>(environment.baseURL +  'users/')
       .pipe(
         tap((users) => {
           this.setUsers(users);

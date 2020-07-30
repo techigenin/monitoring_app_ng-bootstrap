@@ -52,6 +52,10 @@
                       *ngIf="newLogForm.get('callDuration').errors['required']"
                       >Please enter a call duration.</span
                     >
+                    <span
+                      *ngIf="newLogForm.get('callDuration').errors['pattern']"
+                      >Please enter a valid call duration.</span
+                    >
                   </div>
                 </div>
               </div>
@@ -121,6 +125,20 @@
                     id="sales-person-phone-number"
                     class="form-control"
                   />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('salesPhoneNumber').valid &&
+                      newLogForm.get('salesPhoneNumber').touched
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        newLogForm.get('salesPhoneNumber').errors['pattern']
+                      "
+                      >Please enter a valid phone number.</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -191,6 +209,20 @@
                     id="client-phone-number"
                     class="form-control"
                   />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      !newLogForm.get('clientPhoneNumber').valid &&
+                      newLogForm.get('clientPhoneNumber').touched
+                    "
+                  >
+                    <span
+                      *ngIf="
+                        newLogForm.get('clientPhoneNumber').errors['pattern']
+                      "
+                      >Please enter a valid phone number.</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
