@@ -1,0 +1,27 @@
+.card-commendable {
+  background-color: rgb(51, 153, 102) !important;
+  color: black !important;
+}
+
+.card-caution {
+  background-color: rgb(245, 240, 104) !important;
+  color: black !important;
+}
+
+.card-problematic {
+  background-color: rgb(249, 145, 36) !important;
+  color: black !important;
+}
+
+.card-severe {
+  background-color: rgb(235, 56, 56) !important;
+  color: black !important;
+}
+
+.card {
+  border: 2px solid;
+}
+
+.delete-button {
+  cursor: pointer;
+}
