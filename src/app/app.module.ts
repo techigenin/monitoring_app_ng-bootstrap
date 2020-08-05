@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRouterModule } from './app-router.module';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 
@@ -37,12 +38,13 @@ import { CommentCardComponent } from './comments/comment-card/comment-card.compo
     AddEditCommentComponent,
     CommentCardComponent,
     UserDetailsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRouterModule,
-    FormsModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
   ],
   providers: [],

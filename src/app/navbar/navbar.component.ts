@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   loggedInSub: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loggedInSub = this.authService.loggedInChanged.subscribe(() => {
@@ -33,9 +38,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onLoginClick() {
     this.authService.logIn();
+    this.router.navigate(['login'], { relativeTo: this.route.root });
   }
 
   onLogoutClick() {
     this.authService.logOut();
+    this.router.navigate([''], { relativeTo: this.route.root });
   }
 }

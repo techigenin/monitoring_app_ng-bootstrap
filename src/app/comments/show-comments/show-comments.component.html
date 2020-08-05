@@ -1,5 +1,5 @@
 <div class="row mb-2">
-  <div class="col">
+  <div class="col-md-8 offset-md-2 col-sm-10 offset-sm-1 col">
     <button class="btn btn-primary" type="button" (click)="addComment()">
       Add Comment
     </button>
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!comments || comments.length <= 0">
+    <div *ngIf="!comments || comments.length <= 0" class ="col-md-8 offset-md-2 col-sm-10 offset-sm-1 col">
       <p>There are currently no comments for this log.</p>
     </div>
   </div>
