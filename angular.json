@@ -24,7 +24,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.spacelab.min.css",
+              "./src/assets/bootstrap.spacelab.min.css",
               "src/styles.css"
             ],
             "scripts": [

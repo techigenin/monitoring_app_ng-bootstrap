@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="offset-md-2 col-md-8 col-sm-10 offset-sm-1 col">
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="user-name">User Name: </label>
+        <input
+          type="text"
+          name="user-name"
+          id="user-name"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password: </label>
+        <input type="text" name="password" id="password" class="form-control" />
+      </div>
+      <button class="btn btn-primary ml-1 mr-2">Login</button>
+      <button class="btn btn-danger" type="button" (click)="cancelLogin()">Cancel</button>
+    </form>
+  </div>
+</div>

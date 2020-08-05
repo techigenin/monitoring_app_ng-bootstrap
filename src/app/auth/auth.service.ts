@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -9,7 +9,7 @@ export class AuthService {
 
   loggedInChanged = new Subject<void>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   logIn() {
     this.isLoggedIn = true;
@@ -22,7 +22,7 @@ export class AuthService {
     this.isLoggedIn = false;
     this.isAdminUser = false;
     this.loggedInChanged.next();
-    this.router.navigate(['']);
+    this.router.navigate([''], {relativeTo: this.route.root});
   }
 
   get isAuth(): boolean {
